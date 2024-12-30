@@ -41,14 +41,14 @@ const App = () => {
         type="number"
         value={inr}
         onChange={(e) => { setInr(Number(e.target.value)) }}
-      />
+      /> <br />
       <label htmlFor="dose">Daily dose in mg</label>
       <input
         id="dose"
         type="number"
         value={dose}
         onChange={(e) => { setDose(Number(e.target.value)) }}
-      />
+      /> <br />
 
       {/* @ts-ignore */}
       <button onClick={() => { calculateWarfarinDose(inr, dose) }}>
