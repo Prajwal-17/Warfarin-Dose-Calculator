@@ -9,8 +9,6 @@ export type DosingTable = {
   6: INRRange;
 };
 
-
-
 export const calculateInitiationDose = (
   inr: number,
   day: keyof DosingTable,
