@@ -1,5 +1,5 @@
 export function calculateAcitromDose(inr: number, currentDose: number): string {
-  if (inr < 1.3) {
+  if (inr <= 1.3) {
     const newDose = currentDose + 1;
     return `Add 1 mg/day to the current dose. New dose: ${newDose.toFixed(2)} mg daily.`;
   } else if (inr >= 1.4 && inr <= 2.0) {

@@ -9,7 +9,6 @@ import { useState } from "react";
 import { Input } from "./ui/input";
 import { calculateAcitromDose } from "../lib/calculateAcitrom";
 
-
 const AcitromComponent = () => {
 
   const [inr, setInr] = useState('');
