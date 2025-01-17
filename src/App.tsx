@@ -25,7 +25,7 @@ export default function App() {
 
         <Card className="shadow-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-center font-bold text-2xl text-blue-800">Dose Calculator</CardTitle>
+            <CardTitle className="text-center font-bold text-2xl text-blue-800">Oral Anticoagulant Calculator</CardTitle>
             <CardDescription className="text-center text-gray-600">Calculate the appropriate dose based on INR value</CardDescription>
           </CardHeader>
 
