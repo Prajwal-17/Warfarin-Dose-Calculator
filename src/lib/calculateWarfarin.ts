@@ -1,6 +1,6 @@
 type INRRange = { [key: string]: string };
 
-type DosingTable = {
+export type DosingTable = {
   [day: number]: string | INRRange;
 };
 

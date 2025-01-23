@@ -38,8 +38,12 @@ const WarfarinComponent = () => {
         setError("All fields are required");
       }
     } else if (calculationType === "initiation") {
-      if (inr && numericDay && sensitive !== null) {
-        const newDose = calculateInitiationDose(Number(inr), numericDay as keyof DosingTable, sensitive);
+      if (inr && numericDay != null && sensitive != null) {
+        const newDose = calculateInitiationDose(
+          Number(inr),
+          numericDay as keyof DosingTable,
+          sensitive
+        );
         setResult(newDose);
       } else {
         setError("All fields are required");
