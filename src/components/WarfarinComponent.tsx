@@ -123,7 +123,7 @@ const WarfarinComponent = () => {
 
 
 
-    <div className="space-y-2">
+    <div className="space-y-2  ">
       <Label htmlFor="Inr" className="text-blue-800">INR Value</Label>
       <div className="relative">
         <Activity className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -133,6 +133,7 @@ const WarfarinComponent = () => {
           className="pl-10"
           value={inr}
           onChange={(e) => setInr(e.target.value)}
+          disabled={!type}
         />
       </div>
     </div>
@@ -143,14 +144,15 @@ const WarfarinComponent = () => {
         value={calculationType}
         onValueChange={(value) => setCalculationType(value)}
         className="flex gap-4"
+        disabled={!type}
       >
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 ">
           <RadioGroupItem value="maintenance" id="maintenance" />
-          <Label htmlFor="maintenance">Maintenance</Label>
+          <Label htmlFor="maintenance" className={`${!type ? "text-gray-300" : ""}`} >Maintenance</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="initiation" id="initiation" />
-          <Label htmlFor="initiation">Initiation</Label>
+          <Label htmlFor="initiation" className={`${!type ? "text-gray-300" : ""}`}>Initiation</Label>
         </div>
       </RadioGroup>
     </div>
