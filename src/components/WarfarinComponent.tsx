@@ -13,13 +13,16 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useState } from "react";
 import { calculateInitiationDose, calculateWarfarinDose, DosingTable } from "../lib/calculateWarfarin";
+import { calculateRangeWarfarin } from "../lib/calculateRangeWarfarin";
 
 const WarfarinComponent = () => {
 
+  const [type, setType] = useState("")
+  const [range, setRange] = useState("")
   const [inr, setInr] = useState('');
   const [dose, setDose] = useState('');
   const [day, setDay] = useState('');
-  const [calculationType, setCalculationType] = useState<string>("maintenance");
+  const [calculationType, setCalculationType] = useState<string>("");
   const [sensitive, setSensitive] = useState<boolean>(false);
   const [result, setResult] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -30,28 +33,96 @@ const WarfarinComponent = () => {
     setResult("");
     setError("");
 
-    if (calculationType === "maintenance") {
-      if (inr && dose) {
-        const newDose = calculateWarfarinDose(Number(inr), Number(dose));
-        setResult(newDose);
-      } else {
-        setError("All fields are required");
+    if (type === "select-range") {
+
+      if (range === "2-3") {
+        const newDose = calculateRangeWarfarin({
+          inr: Number(inr),
+          currentDose: Number(dose),
+          calculationType: calculationType,
+          day: Number(day),
+          isSensitive: sensitive,
+          targetRange: range
+        });
+        setResult(newDose)
+      } else if (range === "2.5-3.5") {
+        const newDose = calculateRangeWarfarin({
+          inr: Number(inr),
+          currentDose: Number(dose),
+          calculationType: calculationType,
+          day: Number(day),
+          isSensitive: sensitive,
+          targetRange: range
+        })
+        setResult(newDose)
       }
-    } else if (calculationType === "initiation") {
-      if (inr && numericDay != null && sensitive != null) {
-        const newDose = calculateInitiationDose(
-          Number(inr),
-          numericDay as keyof DosingTable,
-          sensitive
-        );
-        setResult(newDose);
-      } else {
-        setError("All fields are required");
+
+    } else if (type === "calculate-dose") {
+      if (calculationType === "maintenance") {
+        if (inr && dose) {
+          const newDose = calculateWarfarinDose(Number(inr), Number(dose));
+          setResult(newDose);
+        } else {
+          setError("All fields are required");
+        }
+      } else if (calculationType === "initiation") {
+        if (inr && numericDay != null && sensitive != null) {
+          const newDose = calculateInitiationDose(
+            Number(inr),
+            numericDay as keyof DosingTable,
+            sensitive
+          );
+          setResult(newDose);
+        } else {
+          setError("All fields are required");
+        }
       }
     }
+
   }
 
   return (<>
+    <div className="space-y-2">
+      <Label className="text-blue-700">Select Type*</Label>
+      <RadioGroup
+        value={type}
+        onValueChange={(value) => setType(value)}
+        className="flex gap-4"
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="select-range" id="select-range" />
+          <Label htmlFor="select-range">Choose Range</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="calculate-dose" id="calculate-dose" />
+          <Label htmlFor="calculate-dose">Calculate Dose</Label>
+        </div>
+      </RadioGroup>
+    </div>
+
+    {
+      type === "select-range" &&
+      <div className="space-y-2">
+        <Label className="text-blue-700">Select your dosage value range</Label>
+        <RadioGroup
+          value={range}
+          onValueChange={(value) => setRange(value)}
+          className="flex gap-4"
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="2-3" id="2-3" />
+            <Label htmlFor="2-3">2 - 3</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="2.5-3.5" id="2.5-3.5" />
+            <Label htmlFor="2.5-3.5">2.5 - 3.5</Label>
+          </div>
+        </RadioGroup>
+      </div>
+    }
+
+
+
     <div className="space-y-2">
       <Label htmlFor="Inr" className="text-blue-800">INR Value</Label>
       <div className="relative">
@@ -136,7 +207,10 @@ const WarfarinComponent = () => {
       </div>
     )}
 
-    <Button onClick={calculateDose} className="w-full bg-blue-600 text-white font-semibold text-center hover:bg-blue-700">
+    <Button
+      onClick={calculateDose}
+      className="w-full bg-blue-600 text-white font-semibold text-center hover:bg-blue-700"
+    >
       Calculate Dose
     </Button>
 
